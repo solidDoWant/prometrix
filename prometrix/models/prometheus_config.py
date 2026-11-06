@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 try:
     # Works if Pydantic v2 is installed
@@ -21,6 +21,10 @@ class PrometheusConfig(BaseModel):
     url: str
     disable_ssl: bool = False
     headers: Dict[str, str] = {}
+    # TLS client certificate as (cert_file, key_file) paths, sent on every request.
+    # Needed when Prometheus is reached through the Kubernetes apiserver service proxy
+    # and the kubeconfig authenticates with a client certificate instead of a token.
+    client_cert: Optional[Tuple[str, str]] = None
     prometheus_auth: Optional[SecretStr] = None
     prometheus_url_query_string: Optional[str] = None
     additional_labels: Optional[Dict[str, str]] = None

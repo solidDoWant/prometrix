@@ -21,6 +21,8 @@ class CustomPrometheusConnect(PrometheusConnect):
         self.config = config
         self.ssl_verification = not config.disable_ssl
         self._session = requests.Session()
+        if config.client_cert:
+            self._session.cert = config.client_cert
         self._session.mount(self.url, HTTPAdapter(pool_maxsize=10, pool_block=True))
 
     def safe_custom_query_range(
